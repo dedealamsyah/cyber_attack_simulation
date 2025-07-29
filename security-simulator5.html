@@ -329,6 +329,30 @@
             <h1>Cyber Security Simulation</h1>
             <p>Alat edukasi untuk memahami serangan dan pertahanan keamanan jaringan</p>
         </div>
+<!-- Tambahkan ini di dalam <header> -->
+<div id="hacker-banner" style="margin-top: 15px; font-family: monospace; font-size: 1em; color: #f1c40f; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 5px; overflow: hidden; white-space: nowrap;">
+    <span id="hacker-text">[+] Initializing Cyber Attack Protocol...</span>
+</div>
+
+<script>
+    const hackerMessages = [
+        "[+] Initializing Cyber Attack Protocol...",
+        "[+] Breaching Firewall...",
+        "[+] Injecting SQL Payload...",
+        "[+] Gaining Root Access...",
+        "[+] Downloading Password Hashes...",
+        "[✓] System Compromised. Launching Simulator..."
+    ];
+    let hackerIndex = 0;
+    function animateHackerText() {
+        const textElement = document.getElementById("hacker-text");
+        textElement.textContent = hackerMessages[hackerIndex];
+        hackerIndex = (hackerIndex + 1) % hackerMessages.length;
+    }
+    setInterval(animateHackerText, 2500);
+</script>
+
+
     </header>
 
     <div class="container">
@@ -1165,5 +1189,78 @@ stmt.setString(2, password);
             quizStarted = false;
         }
     </script>
+<script>
+function showPhishingForm() {
+    document.getElementById("phishingForm").style.display = "block";
+}
+
+function stealCredentials(event) {
+    event.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const result = document.getElementById("phishingResult");
+    result.style.display = "block";
+    result.innerHTML = `
+        <strong>Data yang dimasukkan:</strong><br>
+        Username: <code>${username}</code><br>
+        Password: <code>${password}</code><br>
+        <p style="color:red;">⚠️ Dalam dunia nyata, informasi ini bisa dicuri!</p>
+    `;
+}
+</script>
+
+<script>
+let bruteForceInterval;
+let usernames = ["admin", "user", "root"];
+let passwords = ["123456", "admin123", "password"];
+let currentAttempt = 0;
+
+function tryLogin() {
+    const u = document.getElementById("bfUsername").value;
+    const p = document.getElementById("bfPassword").value;
+    const result = document.getElementById("bfResult");
+
+    if (u === "admin" && p === "admin123") {
+        result.innerHTML = "<span style='color:green;'>Login berhasil sebagai admin</span>";
+    } else {
+        result.innerHTML = "<span style='color:red;'>Login gagal</span>";
+    }
+}
+
+function startBruteForce() {
+    const attemptBox = document.getElementById("bfAttempts");
+    const result = document.getElementById("bfResult");
+    const stopBtn = document.getElementById("stopBtn");
+    stopBtn.disabled = false;
+    currentAttempt = 0;
+
+    bruteForceInterval = setInterval(() => {
+        const user = usernames[Math.floor(Math.random() * usernames.length)];
+        const pass = passwords[Math.floor(Math.random() * passwords.length)];
+        attemptBox.innerHTML += `Mencoba ${user} / ${pass}<br>`;
+        attemptBox.scrollTop = attemptBox.scrollHeight;
+
+        if (user === "admin" && pass === "admin123") {
+            clearInterval(bruteForceInterval);
+            result.innerHTML = `<span style="color:green;">Berhasil login dengan ${user} / ${pass}</span>`;
+            stopBtn.disabled = true;
+        }
+
+        currentAttempt++;
+        if (currentAttempt > 50) {
+            clearInterval(bruteForceInterval);
+            result.innerHTML = "<span style='color:red;'>Brute force gagal</span>";
+            stopBtn.disabled = true;
+        }
+    }, 200);
+}
+
+function stopBruteForce() {
+    clearInterval(bruteForceInterval);
+    document.getElementById("stopBtn").disabled = true;
+}
+</script>
+
+
 </body>
 </html>
